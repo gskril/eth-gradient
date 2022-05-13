@@ -2,6 +2,6 @@
 
 Derive a gradient SVG from an Ethereum address.
 
-Currently, two different SVGs are created using numbers from the Ethereum address and exported to `/test` for easy viewing, one using HSL and the other RGB. 
+## Testing
 
-Eventually we'll settle on one method but this seemed easiest for quick visualizations.
+An Ethereum address is converted into an array of numbers which are used to create colors in a gradient. Currently, this happens on a handful of addresses simultaneously to easily visualize the output across a set. The SVG's are saved to `/test`.
