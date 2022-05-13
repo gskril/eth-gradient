@@ -6,12 +6,14 @@ const addresses = [
 	'0x1eC4dE886d40d487366Cde7664767Db1DF6a02e7',
 	'0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
 	'0x7f268357A8c2552623316e2562D90e642bB538E5',
+	'0x0000000035634b55f3d99b071b5a354f48e10bef',
+	'0x59728544b08ab483533076417fbbb2fd0b17ce3a',
+	'0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72',
 ]
 
-addresses.forEach(address => {
+addresses.forEach((address) => {
 	gradientFromAddress(address)
 })
-
 
 function gradientFromAddress(address) {
 	if (!isAddress(address)) {
@@ -22,9 +24,6 @@ function gradientFromAddress(address) {
 	const numbers = Array.from(stripZeros(address))
 
 	// HSL format: (0-360), (0-100)%, (0-100)%
-	// RGB format: (0-255), (0-255), (0-255)
-
-	// Testing with HSL
 	let hue = numbers[0]
 	let saturation = numbers[1]
 
@@ -32,44 +31,18 @@ function gradientFromAddress(address) {
 	hue = hue > 360 ? 200 : hue
 	saturation = saturation > 100 ? 100 : saturation
 
-	// Testing with RGB
-	let red = numbers[0]
-	let green = numbers[1]
-	let blue = numbers[2]
+	const svg = generateSvg({
+		hue,
+		saturation,
+	})
 
-	// Make sure the numbers are valid rgb values
-	red = red > 255 ? 255 : red
-	green = green > 255 ? 255 : green
-	blue = blue > 255 ? 255 : blue
-
-	const hsl = {
-		hue: hue,
-		saturation: saturation,
-		lightness: 50,
-	}
-	const rgb = {
-		red: red,
-		green: green,
-		blue: blue,
-	}
-
-	fs.writeFileSync(`./test/${address.substring(0, 6)}-hsl.svg`, generateSvg(hsl))
-	fs.writeFileSync(`./test/${address.substring(0, 6)}-rgb.svg`, generateSvg(rgb))
-
-	return generateSvg(hsl)
+	fs.writeFileSync(`./test/${address.substring(0, 6)}.svg`, svg)
+	return svg
 }
 
 function generateSvg(color) {
-	let color1, color2
-
-	if (color.hue) {
-		color1 = `hsl(${color.hue}, ${color.saturation}%, 80%)`
-		color2 = `hsl(${color.hue}, ${color.saturation}%, 50%)`
-	} else {
-		const hsl = rgbToHsl(color.red, color.green, color.blue)
-		color1 = `hsl(${hsl[0]}, ${hsl[1]}%, 80%)`
-		color2 = `hsl(${hsl[0]}, ${hsl[1]}%, 50%)`
-	}
+	const color1 = `hsl(${color.hue}, ${color.saturation}%, 80%)`
+	const color2 = `hsl(${color.hue}, ${color.saturation}%, 50%)`
 
 	return `
 		<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -82,34 +55,4 @@ function generateSvg(color) {
 			</defs>
 		</svg>
   `
-}
-
-function rgbToHsl(r, g, b) {
-	;(r /= 255), (g /= 255), (b /= 255)
-	var max = Math.max(r, g, b),
-		min = Math.min(r, g, b)
-	var h,
-		s,
-		l = (max + min) / 2
-
-	if (max == min) {
-		h = s = 0 // achromatic
-	} else {
-		var d = max - min
-		s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-		switch (max) {
-			case r:
-				h = (g - b) / d + (g < b ? 6 : 0)
-				break
-			case g:
-				h = (b - r) / d + 2
-				break
-			case b:
-				h = (r - g) / d + 4
-				break
-		}
-		h /= 6
-	}
-
-	return [Math.floor(h * 360), Math.floor(s * 100), Math.floor(l * 100)]
 }
