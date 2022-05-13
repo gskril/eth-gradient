@@ -1,7 +1,17 @@
 const { isAddress, stripZeros } = require('essential-eth')
 const fs = require('fs')
 
-gradientFromAddress('')
+const addresses = [
+	'0xFe89cc7aBB2C4183683ab71653C4cdc9B02D44b7',
+	'0x1eC4dE886d40d487366Cde7664767Db1DF6a02e7',
+	'0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+	'0x7f268357A8c2552623316e2562D90e642bB538E5',
+]
+
+addresses.forEach(address => {
+	gradientFromAddress(address)
+})
+
 
 function gradientFromAddress(address) {
 	if (!isAddress(address)) {
@@ -43,8 +53,8 @@ function gradientFromAddress(address) {
 		blue: blue,
 	}
 
-	fs.writeFileSync(`./test/hsl.svg`, generateSvg(hsl))
-	fs.writeFileSync(`./test/rgb.svg`, generateSvg(rgb))
+	fs.writeFileSync(`./test/${address.substring(0, 6)}-hsl.svg`, generateSvg(hsl))
+	fs.writeFileSync(`./test/${address.substring(0, 6)}-rgb.svg`, generateSvg(rgb))
 
 	return generateSvg(hsl)
 }
