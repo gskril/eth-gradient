@@ -1,2 +1,6 @@
+# Project
+/test/*.svg
+
+# System
 .DS_Store
 /node_modules

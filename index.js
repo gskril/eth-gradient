@@ -1,4 +1,7 @@
 const { isAddress, stripZeros } = require('essential-eth')
+const fs = require('fs')
+
+gradientFromAddress('')
 
 function gradientFromAddress(address) {
 	if (!isAddress(address)) {
@@ -29,10 +32,74 @@ function gradientFromAddress(address) {
 	green = green > 255 ? 255 : green
 	blue = blue > 255 ? 255 : blue
 
-	const hsl = `hsl(${hue}, ${saturation}%, 50%)`
-	const rgb = `rgb(${red}, ${green}, ${blue})`
+	const hsl = {
+		hue: hue,
+		saturation: saturation,
+		lightness: 50,
+	}
+	const rgb = {
+		red: red,
+		green: green,
+		blue: blue,
+	}
 
-	return hsl + '\n' + rgb
+	fs.writeFileSync(`./test/hsl.svg`, generateSvg(hsl))
+	fs.writeFileSync(`./test/rgb.svg`, generateSvg(rgb))
+
+	return generateSvg(hsl)
 }
 
-console.log(gradientFromAddress(''))
+function generateSvg(color) {
+	let color1, color2
+
+	if (color.hue) {
+		color1 = `hsl(${color.hue}, ${color.saturation}%, 80%)`
+		color2 = `hsl(${color.hue}, ${color.saturation}%, 50%)`
+	} else {
+		const hsl = rgbToHsl(color.red, color.green, color.blue)
+		color1 = `hsl(${hsl[0]}, ${hsl[1]}%, 80%)`
+		color2 = `hsl(${hsl[0]}, ${hsl[1]}%, 50%)`
+	}
+
+	return `
+		<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<circle cx="128" cy="128" r="128" fill="url(#gradient)"/>
+			<defs>
+				<radialGradient id="gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(63.5 102) rotate(44.1319) scale(140.023)">
+					<stop offset="0" stop-color="${color1}"/>
+					<stop offset="1" stop-color="${color2}"/>
+				</radialGradient>
+			</defs>
+		</svg>
+  `
+}
+
+function rgbToHsl(r, g, b) {
+	;(r /= 255), (g /= 255), (b /= 255)
+	var max = Math.max(r, g, b),
+		min = Math.min(r, g, b)
+	var h,
+		s,
+		l = (max + min) / 2
+
+	if (max == min) {
+		h = s = 0 // achromatic
+	} else {
+		var d = max - min
+		s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+		switch (max) {
+			case r:
+				h = (g - b) / d + (g < b ? 6 : 0)
+				break
+			case g:
+				h = (b - r) / d + 2
+				break
+			case b:
+				h = (r - g) / d + 4
+				break
+		}
+		h /= 6
+	}
+
+	return [Math.floor(h * 360), Math.floor(s * 100), Math.floor(l * 100)]
+}
