@@ -12,37 +12,36 @@ const addresses = [
 ]
 
 addresses.forEach((address) => {
-	gradientFromAddress(address)
+	gradientFromAddress(address, null)
 })
 
-function gradientFromAddress(address) {
+function gradientFromAddress(address, options) {
 	if (!isAddress(address)) {
 		throw new Error('Invalid Ethereum address')
 	}
 
 	// Convert the address to an array of numbers
 	const numbers = Array.from(stripZeros(address))
+		// .sort((a, b) => a - b)
 
-	// RGB format: (0-255), (0-255), (0-255)
-	let red = numbers[0],
-		green = numbers[1],
-		blue = numbers[2]
-
-	// Make sure the numbers are valid RGB values
-	red = Math.max(0, Math.min(255, red))
-	green = Math.max(0, Math.min(255, green))
-	blue = Math.max(0, Math.min(255, blue))
-
-	const svg = generateSvg(red, green, blue)
-
-	fs.writeFileSync(`./test/${address.substring(0, 6)}.svg`, svg)
-	return svg
+	if (options && options.output === 'css') {
+		// ...
+	} else {
+		const svg = generateSvg(numbers)
+		fs.writeFileSync(`./test/${address.substring(0, 6)}.svg`, svg)
+		return svg
+	}
 }
 
-function generateSvg(r, g, b) {
+function generateSvg(numbers) {
+	const n = (i) => {
+		// If that index in the array doesn't exist, return 100
+		return numbers[i] || 100
+	}
+
 	return `
 		<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
-			<circle cx="128" cy="128" r="128" fill="rgb(${r}, ${g}, ${b})"/>
+			<circle cx="128" cy="128" r="128" fill="rgb(${n(1)},${n(2)},${n(3)})"/>
 			<circle cx="128" cy="128" r="128" fill="url(#grad1)"/>
 			<circle cx="128" cy="128" r="128" fill="url(#grad2)"/>
 			<circle cx="128" cy="128" r="128" fill="url(#grad3)"/>
@@ -53,32 +52,32 @@ function generateSvg(r, g, b) {
 
 			<defs>
 				<radialGradient id="grad1" cx="81%" cy="22%" r="100%" fx="81%" fy="22%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${r}, ${g}, ${b})" stop-opacity="1" />
-					<stop offset="0.5" stop-color="rgb(${r}, ${g}, ${b})" stop-opacity="0" />
+					<stop offset="0" stop-color="rgb(${n(5)}, ${n(6)}, ${n(7)})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
 				<radialGradient id="grad2" cx="34%" cy="6%" r="100%" fx="34%" fy="6%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${r+20}, ${g+20}, ${b+20})" stop-opacity="1" />
-					<stop offset="0.5" stop-color="rgb(${r+20}, ${g+20}, ${b+20})" stop-opacity="0" />
+					<stop offset="0" stop-color="rgb(${n(8)}, ${n(9)}, ${n(10)})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
-				<radialGradient id="grad3" cx="79%" cy="6%" r="100%" fx="79%" fy="6%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${r-20}, ${g-20}, ${b-20})" stop-opacity="1" />
-					<stop offset="0.5" stop-color="rgb(${r-20}, ${g-20}, ${b-20})" stop-opacity="0" />
+				<radialGradient id="grad3" cx="79%" cy="6%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${n(1)}, ${n(12)}, ${n(13)})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
-				<radialGradient id="grad4" cx="6%" cy="37%" r="100%" fx="6%" fy="37%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${r+35}, ${g+35}, ${b+35})" stop-opacity="1" />
-					<stop offset="0.5" stop-color="rgb(${r+35}, ${g+35}, ${b+35})" stop-opacity="0" />
+				<radialGradient id="grad4" cx="6%" cy="37%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${n(14)}, ${n(15)}, ${n(16)})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
-				<radialGradient id="grad5" cx="18%" cy="16%" r="100%" fx="18%" fy="16%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${r+30}, ${g-20}, ${b+5})" stop-opacity="1" />
-					<stop offset="0.5" stop-color="rgb(${r+30}, ${g-20}, ${b+5})" stop-opacity="0" />
+				<radialGradient id="grad5" cx="18%" cy="16%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${n(8)}, ${n(12)}, ${n(15)})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
-				<radialGradient id="grad6" cx="22%" cy="13%" r="100%" fx="22%" fy="13%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${r+60}, ${g+60}, ${b+60})" stop-opacity="1" />
-					<stop offset="0.5" stop-color="rgb(${r+60}, ${g+60}, ${b+60})" stop-opacity="0" />
+				<radialGradient id="grad6" cx="22%" cy="13%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${n(8)}, ${n(12)}, ${n(15)})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
-				<radialGradient id="grad7" cx="73%" cy="76%" r="100%" fx="73%" fy="76%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${r+60}, ${g+60}, ${b+60})" stop-opacity="1" />
-					<stop offset="0.5" stop-color="rgb(${r+60}, ${g+60}, ${b+60})" stop-opacity="0" />
+				<radialGradient id="grad7" cx="73%" cy="76%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${n(8)}, ${n(12)}, ${n(15)})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
 			</defs>
 		</svg>
