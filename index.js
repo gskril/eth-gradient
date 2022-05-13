@@ -23,34 +23,62 @@ function gradientFromAddress(address) {
 	// Convert the address to an array of numbers
 	const numbers = Array.from(stripZeros(address))
 
-	// HSL format: (0-360), (0-100)%, (0-100)%
-	let hue = numbers[0]
-	let saturation = numbers[1]
+	// RGB format: (0-255), (0-255), (0-255)
+	let red = numbers[0],
+		green = numbers[1],
+		blue = numbers[2]
 
-	// Make sure the numbers are valid hsl values
-	hue = hue > 360 ? 200 : hue
-	saturation = saturation > 100 ? 100 : saturation
+	// Make sure the numbers are valid RGB values
+	red = Math.max(0, Math.min(255, red))
+	green = Math.max(0, Math.min(255, green))
+	blue = Math.max(0, Math.min(255, blue))
 
-	const svg = generateSvg({
-		hue,
-		saturation,
-	})
+	const svg = generateSvg(red, green, blue)
 
 	fs.writeFileSync(`./test/${address.substring(0, 6)}.svg`, svg)
 	return svg
 }
 
-function generateSvg(color) {
-	const color1 = `hsl(${color.hue}, ${color.saturation}%, 80%)`
-	const color2 = `hsl(${color.hue}, ${color.saturation}%, 50%)`
-
+function generateSvg(r, g, b) {
 	return `
-		<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<circle cx="128" cy="128" r="128" fill="url(#gradient)"/>
+		<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+			<circle cx="128" cy="128" r="128" fill="rgb(${r}, ${g}, ${b})"/>
+			<circle cx="128" cy="128" r="128" fill="url(#grad1)"/>
+			<circle cx="128" cy="128" r="128" fill="url(#grad2)"/>
+			<circle cx="128" cy="128" r="128" fill="url(#grad3)"/>
+			<circle cx="128" cy="128" r="128" fill="url(#grad4)"/>
+			<circle cx="128" cy="128" r="128" fill="url(#grad5)"/>
+			<circle cx="128" cy="128" r="128" fill="url(#grad6)"/>
+			<circle cx="128" cy="128" r="128" fill="url(#grad7)"/>
+
 			<defs>
-				<radialGradient id="gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(63.5 102) rotate(44.1319) scale(140.023)">
-					<stop offset="0" stop-color="${color1}"/>
-					<stop offset="1" stop-color="${color2}"/>
+				<radialGradient id="grad1" cx="81%" cy="22%" r="100%" fx="81%" fy="22%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${r}, ${g}, ${b})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="rgb(${r}, ${g}, ${b})" stop-opacity="0" />
+				</radialGradient>
+				<radialGradient id="grad2" cx="34%" cy="6%" r="100%" fx="34%" fy="6%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${r+20}, ${g+20}, ${b+20})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="rgb(${r+20}, ${g+20}, ${b+20})" stop-opacity="0" />
+				</radialGradient>
+				<radialGradient id="grad3" cx="79%" cy="6%" r="100%" fx="79%" fy="6%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${r-20}, ${g-20}, ${b-20})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="rgb(${r-20}, ${g-20}, ${b-20})" stop-opacity="0" />
+				</radialGradient>
+				<radialGradient id="grad4" cx="6%" cy="37%" r="100%" fx="6%" fy="37%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${r+35}, ${g+35}, ${b+35})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="rgb(${r+35}, ${g+35}, ${b+35})" stop-opacity="0" />
+				</radialGradient>
+				<radialGradient id="grad5" cx="18%" cy="16%" r="100%" fx="18%" fy="16%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${r+30}, ${g-20}, ${b+5})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="rgb(${r+30}, ${g-20}, ${b+5})" stop-opacity="0" />
+				</radialGradient>
+				<radialGradient id="grad6" cx="22%" cy="13%" r="100%" fx="22%" fy="13%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${r+60}, ${g+60}, ${b+60})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="rgb(${r+60}, ${g+60}, ${b+60})" stop-opacity="0" />
+				</radialGradient>
+				<radialGradient id="grad7" cx="73%" cy="76%" r="100%" fx="73%" fy="76%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${r+60}, ${g+60}, ${b+60})" stop-opacity="1" />
+					<stop offset="0.5" stop-color="rgb(${r+60}, ${g+60}, ${b+60})" stop-opacity="0" />
 				</radialGradient>
 			</defs>
 		</svg>
