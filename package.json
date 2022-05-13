@@ -1,0 +1,15 @@
+{
+  "name": "eth-gradient",
+  "version": "0.0.1",
+  "description": "Derive a gradient SVG from an Ethereum address",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+  "license": "ISC",
+  "keywords": [],
+  "dependencies": {
+    "essential-eth": "^0.5.4"
+  }
+}
