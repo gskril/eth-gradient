@@ -52,31 +52,31 @@ function generateSvg(numbers) {
 
 			<defs>
 				<radialGradient id="grad1" cx="81%" cy="22%" r="100%" fx="81%" fy="22%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${n(5)}, ${n(6)}, ${n(7)})" stop-opacity="1" />
+					<stop offset="0" stop-color="rgb(${n(1)}, ${n(2)}, ${n(3)})" stop-opacity="1" />
 					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
 				<radialGradient id="grad2" cx="34%" cy="6%" r="100%" fx="34%" fy="6%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${n(8)}, ${n(9)}, ${n(10)})" stop-opacity="1" />
+					<stop offset="0" stop-color="rgb(${n(4)}, ${n(5)}, ${n(6)})" stop-opacity="1" />
 					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
-				<radialGradient id="grad3" cx="79%" cy="6%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${n(1)}, ${n(12)}, ${n(13)})" stop-opacity="1" />
+				<radialGradient id="grad3" cx="79%" cy="6%" r="100%" fx="79%" fy="6%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${n(7)}, ${n(8)}, ${n(9)})" stop-opacity="1" />
 					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
-				<radialGradient id="grad4" cx="6%" cy="37%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${n(14)}, ${n(15)}, ${n(16)})" stop-opacity="1" />
+				<radialGradient id="grad4" cx="6%" cy="37%" r="100%" fx="6%" fy="37%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${n(10)}, ${n(11)}, ${n(12)})" stop-opacity="1" />
 					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
-				<radialGradient id="grad5" cx="18%" cy="16%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${n(8)}, ${n(12)}, ${n(15)})" stop-opacity="1" />
+				<radialGradient id="grad5" cx="18%" cy="16%" r="100%" fx="18%" fy="16%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${n(13)}, ${n(14)}, ${n(15)})" stop-opacity="1" />
 					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
-				<radialGradient id="grad6" cx="22%" cy="13%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${n(8)}, ${n(12)}, ${n(15)})" stop-opacity="1" />
+				<radialGradient id="grad6" cx="22%" cy="13%" r="100%" fx="22%" fy="13%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${n(16)}, ${n(17)}, ${n(18)})" stop-opacity="1" />
 					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
-				<radialGradient id="grad7" cx="73%" cy="76%" gradientUnits="objectBoundingBox">
-					<stop offset="0" stop-color="rgb(${n(8)}, ${n(12)}, ${n(15)})" stop-opacity="1" />
+				<radialGradient id="grad7" cx="73%" cy="76%" r="100%" fx="73%" fy="76%" gradientUnits="objectBoundingBox">
+					<stop offset="0" stop-color="rgb(${n(19)}, ${n(0)}, ${n(1)})" stop-opacity="1" />
 					<stop offset="0.5" stop-color="transparent" stop-opacity="0" />
 				</radialGradient>
 			</defs>
